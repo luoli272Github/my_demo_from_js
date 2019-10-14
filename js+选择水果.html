@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择水果</title>
+    <style>
+        select {
+            width:200px;
+            height: 200px;
+            background-color: #33cccc;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+  <select id="all" multiple="multiple"><!-- multiple属性让下拉框实现多选 -->
+    <option>苹果</option>
+    <option>橘子</option>
+    <option>梨</option>
+    <option>西瓜</option>
+    <option>水蜜桃</option>
+  </select>
+
+  <input type="button" value=">>" id="btn1">
+  <input type="button" value="<<" id="btn2">
+  <input type="button" value=">" id="btn3">
+  <input type="button" value="<" id="btn4">
+
+  <select id="select" multiple="multiple">
+    
+  </select>
+  
+  <script src="JavaScript/common.js"></script>
+  <script>
+    var all = my$('all');//获取第1个select
+    var select = my$('select');//获取第2个select
+
+    all.children[0].onclick = function () {
+      alert('这是个苹果事件');
+    }
+
+    // 1 全部选择
+    my$('btn1').onclick = function () {
+      // 先获取子元素的个数，将来再发生变化不会受影响
+      // 现在len的值始终是当前获取到的all.children.length 当前个数5
+      // var len = all.children.length;
+      // for (var i = 0; i < len; i++) {
+      //   var option = all.children[0];
+      //   select.appendChild(option);                                   
+      // }                                                               
+      //         第一篮 --> array -->第二篮
+      //         第一篮 <-- array <--第二篮
+      // 使用这种方式移动子元素的话，如果子元素有事件，移动之后元素的事件丢失
+      select.innerHTML = all.innerHTML;
+      // 当我们是用innerHTML 清空子元素的时候
+      // 如果子元素有事件，此时会发生内存泄漏
+      all.innerHTML = '';  // 清空标签之间的内容
+    }
+
+    // 3 移动选中的水果
+    my$('btn3').onclick = function () {
+      // 找到所有选中的option
+      var array = []; // 存储选中的水果option
+      for (var i = 0; i < all.children.length; i++) {//遍历第一个篮子里的所有水果
+        var option = all.children[i];
+        if (option.selected) { //selected是option标签的选中属性,为布尔值
+          array.push(option);//拼接被选中的水果到数组里
+          
+          option.selected = false;// 去掉当前option的选中效果
+        }
+      }
+
+      // 把数组中的option移动到第二个select中
+      for (var i = 0; i < array.length; i++) {
+        var option = array[i];
+		
+        select.appendChild(option);//把option作为子元素放到第二个篮子里
+      }
+    }
+  </script>
+</body>
+</html>
